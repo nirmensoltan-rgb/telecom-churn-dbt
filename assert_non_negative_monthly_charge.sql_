@@ -1,0 +1,5 @@
+{{ config(severity='warn') }}
+-- Known issue: 120 customers have a negative Monthly Charge. Warn, don't fail.
+select customer_id, monthly_charge
+from {{ ref('stg_customer_churn') }}
+where monthly_charge < 0

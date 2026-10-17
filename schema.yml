@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: customers_churn_analysis
+    description: "One row per customer: cleaned churn data joined with zip code population, plus churn flags and customer segments."
+    columns:
+      - name: customer_id
+        data_tests: [unique, not_null]
+      - name: is_churned
+        data_tests:
+          - accepted_values:
+              arguments: {values: [0, 1], quote: false}

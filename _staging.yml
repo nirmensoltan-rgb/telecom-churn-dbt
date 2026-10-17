@@ -1,0 +1,37 @@
+version: 2
+
+sources:
+  - name: raw
+    database: CHURN_DB
+    schema: RAW
+    tables:
+      - name: customer_churn
+        identifier: CUSTOMER_CHURN
+      - name: zipcode_population
+        identifier: ZIPCODE_POPULATION
+
+models:
+  - name: stg_customer_churn
+    columns:
+      - name: customer_id
+        data_tests: [unique, not_null]
+      - name: customer_status
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['Stayed', 'Churned', 'Joined']}
+      - name: contract
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['Month-to-Month', 'One Year', 'Two Year']}
+      - name: churn_category
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['Attitude', 'Competitor', 'Dissatisfaction', 'Other', 'Price']}
+      - name: zip_code
+        data_tests:
+          - relationships:
+              arguments: {to: "ref('stg_zipcode_population')", field: zip_code}
+  - name: stg_zipcode_population
+    columns:
+      - name: zip_code
+        data_tests: [unique, not_null]

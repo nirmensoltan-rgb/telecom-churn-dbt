@@ -1,0 +1,19 @@
+name: churn_reporting
+version: "1.0.0"
+config-version: 2
+profile: default
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+
+vars:
+  min_customers_per_city: 20   # hide tiny cities from the city report
+
+models:
+  churn_reporting:
+    staging:
+      +materialized: view
+
+    marts:
+      +materialized: table
